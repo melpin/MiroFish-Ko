@@ -1,15 +1,15 @@
 """
-API 라우트 모듈
+API route modules.
 """
 
 from flask import Blueprint
 
-graph_bp = Blueprint('graph', __name__)
-simulation_bp = Blueprint('simulation', __name__)
-report_bp = Blueprint('report', __name__)
+from .simulation import simulation_bp
+
+graph_bp = Blueprint("graph", __name__)
+report_bp = Blueprint("report", __name__)
 
 from . import graph  # noqa: E402, F401
-from . import simulation  # noqa: E402, F401
 from . import simulation_assets  # noqa: E402, F401
 from . import simulation_content  # noqa: E402, F401
 from . import simulation_entities  # noqa: E402, F401

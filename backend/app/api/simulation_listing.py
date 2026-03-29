@@ -8,7 +8,7 @@ import traceback
 
 from flask import jsonify, request
 
-from . import simulation_bp
+from .simulation import simulation_bp
 from ..models.project import ProjectManager
 from ..services.simulation_manager import SimulationManager, SimulationStatus
 from ..services.simulation_runner import SimulationRunner

@@ -6,8 +6,8 @@ import traceback
 
 from flask import jsonify, request
 
-from . import simulation_bp
-from .simulation import optimize_interview_prompt
+from .simulation import simulation_bp
+from .simulation.helpers import optimize_interview_prompt
 from ..services.simulation_manager import SimulationManager, SimulationStatus
 from ..services.simulation_runner import SimulationRunner
 from ..utils.logger import get_logger

@@ -6,7 +6,7 @@ import traceback
 
 from flask import jsonify, request
 
-from . import simulation_bp
+from .simulation import simulation_bp
 from ..services.simulation_runner import SimulationRunner
 from ..utils.logger import get_logger
 

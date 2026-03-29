@@ -8,7 +8,7 @@ import traceback
 
 from flask import jsonify, request
 
-from . import simulation_bp
+from .simulation import simulation_bp
 from ..utils.logger import get_logger
 
 logger = get_logger("mirofish.api.simulation.content")

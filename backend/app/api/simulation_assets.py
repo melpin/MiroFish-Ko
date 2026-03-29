@@ -10,7 +10,7 @@ from datetime import datetime
 
 from flask import jsonify, request, send_file
 
-from . import simulation_bp
+from .simulation import simulation_bp
 from ..config import Config
 from ..services.simulation_manager import SimulationManager
 from ..utils.logger import get_logger

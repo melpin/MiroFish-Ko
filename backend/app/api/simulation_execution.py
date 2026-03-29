@@ -6,8 +6,8 @@ import traceback
 
 from flask import jsonify, request
 
-from . import simulation_bp
-from .simulation import _check_simulation_prepared
+from .simulation import simulation_bp
+from .simulation.helpers import check_simulation_prepared
 from ..models.project import ProjectManager
 from ..services.simulation_manager import SimulationManager, SimulationStatus
 from ..services.simulation_runner import SimulationRunner
@@ -55,7 +55,7 @@ def start_simulation():
 
         force_restarted = False
         if state.status != SimulationStatus.READY:
-            is_prepared, _ = _check_simulation_prepared(simulation_id)
+            is_prepared, _ = check_simulation_prepared(simulation_id)
             if not is_prepared:
                 return jsonify(
                     {
