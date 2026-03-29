@@ -11,7 +11,7 @@ from flask import request, jsonify, send_file
 from . import report_bp
 from ..config import Config
 from ..services.report import ReportAgent, ReportManager, ReportStatus
-from ..services.simulation_manager import SimulationManager
+from ..services.simulation import SimulationManager
 from ..models.project import ProjectManager
 from ..models.task import TaskManager, TaskStatus
 from ..utils.logger import get_logger

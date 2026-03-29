@@ -43,7 +43,7 @@ def create_app(config_class=Config):
     CORS(app, resources={r"/api/*": {"origins": "*"}})
     
     # 시뮬레이션 프로세스 정리 함수 등록(서버 종료 시 모든 시뮬레이션 프로세스 종료)
-    from .services.simulation_runner import SimulationRunner
+    from .services.simulation import SimulationRunner
     SimulationRunner.register_cleanup()
     if should_log_startup:
         logger.info("시뮬레이션 프로세스 정리 함수 등록 완료")

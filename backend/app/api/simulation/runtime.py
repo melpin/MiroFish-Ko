@@ -7,7 +7,7 @@ import traceback
 from flask import jsonify, request
 
 from .blueprint import simulation_bp
-from ...services.simulation_runner import SimulationRunner
+from ...services.simulation import SimulationRunner
 from ...utils.logger import get_logger
 
 logger = get_logger("mirofish.api.simulation.runtime")

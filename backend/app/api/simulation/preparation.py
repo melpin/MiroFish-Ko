@@ -7,7 +7,7 @@ from .blueprint import simulation_bp
 from .helpers import check_simulation_prepared, logger
 from ...models.project import ProjectManager
 from ...models.task import TaskManager, TaskStatus
-from ...services.simulation_manager import SimulationManager, SimulationStatus
+from ...services.simulation import SimulationManager, SimulationStatus
 from ...services.zep_entity_reader import ZepEntityReader
 
 

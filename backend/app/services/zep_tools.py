@@ -1295,7 +1295,7 @@ class ZepToolsService:
         Returns:
             InterviewResult: 인터뷰 결과
         """
-        from .simulation_runner import SimulationRunner
+        from .simulation import SimulationRunner
         
         logger.info(f"InterviewAgents 인터뷰(API): {interview_requirement[:50]}...")
         

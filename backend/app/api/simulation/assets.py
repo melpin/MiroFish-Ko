@@ -12,7 +12,7 @@ from flask import jsonify, request, send_file
 
 from .blueprint import simulation_bp
 from ...config import Config
-from ...services.simulation_manager import SimulationManager
+from ...services.simulation import SimulationManager
 from ...utils.logger import get_logger
 
 logger = get_logger("mirofish.api.simulation.assets")

@@ -9,8 +9,7 @@ from flask import jsonify, request
 from .blueprint import simulation_bp
 from .helpers import check_simulation_prepared
 from ...models.project import ProjectManager
-from ...services.simulation_manager import SimulationManager, SimulationStatus
-from ...services.simulation_runner import SimulationRunner
+from ...services.simulation import SimulationManager, SimulationRunner, SimulationStatus
 from ...utils.logger import get_logger
 
 logger = get_logger("mirofish.api.simulation.execution")

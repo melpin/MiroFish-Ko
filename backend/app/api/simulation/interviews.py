@@ -8,8 +8,7 @@ from flask import jsonify, request
 
 from .blueprint import simulation_bp
 from .helpers import optimize_interview_prompt
-from ...services.simulation_manager import SimulationManager, SimulationStatus
-from ...services.simulation_runner import SimulationRunner
+from ...services.simulation import SimulationManager, SimulationRunner, SimulationStatus
 from ...utils.logger import get_logger
 
 logger = get_logger("mirofish.api.simulation.interviews")
