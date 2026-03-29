@@ -5,15 +5,14 @@ Step2: Zep엔터티읽기, OASIS시뮬레이션 실행()
 
 import os
 import traceback
-from flask import request, jsonify, send_file
+from flask import request, jsonify
 
 from . import simulation_bp
 from ..config import Config
 from ..prompts import get_prompt
 from ..services.zep_entity_reader import ZepEntityReader
-from ..services.oasis_profile_generator import OasisProfileGenerator
 from ..services.simulation_manager import SimulationManager, SimulationStatus
-from ..services.simulation_runner import SimulationRunner, RunnerStatus
+from ..services.simulation_runner import SimulationRunner
 from ..utils.logger import get_logger
 from ..models.project import ProjectManager
 
@@ -635,78 +634,6 @@ def get_prepare_status():
 
 
 
-# ============== Profile생성API() ==============
-
-@simulation_bp.route('/generate-profiles', methods=['POST'])
-def generate_profiles():
-    """
-    그래프생성OASIS Agent Profile(시뮬레이션)
-    
-    요청(JSON):
-        {
-            "graph_id": "mirofish_xxxx",     // 필수
-            "entity_types": ["Student"],      // 선택
-            "use_llm": true,                  // 선택
-            "platform": "reddit"              // 선택
-        }
-    """
-    try:
-        data = request.get_json() or {}
-        
-        graph_id = data.get('graph_id')
-        if not graph_id:
-            return jsonify({
-                "success": False,
-                "error": "graph_id를 입력해 주세요."
-            }), 400
-        
-        entity_types = data.get('entity_types')
-        use_llm = data.get('use_llm', True)
-        platform = data.get('platform', 'reddit')
-        
-        reader = ZepEntityReader()
-        filtered = reader.filter_defined_entities(
-            graph_id=graph_id,
-            defined_entity_types=entity_types,
-            enrich_with_edges=True
-        )
-        
-        if filtered.filtered_count == 0:
-            return jsonify({
-                "success": False,
-                "error": "찾지 못함엔터티"
-            }), 400
-        
-        generator = OasisProfileGenerator()
-        profiles = generator.generate_profiles_from_entities(
-            entities=filtered.entities,
-            use_llm=use_llm
-        )
-        
-        if platform == "reddit":
-            profiles_data = [p.to_reddit_format() for p in profiles]
-        elif platform == "twitter":
-            profiles_data = [p.to_twitter_format() for p in profiles]
-        else:
-            profiles_data = [p.to_dict() for p in profiles]
-        
-        return jsonify({
-            "success": True,
-            "data": {
-                "platform": platform,
-                "entity_types": list(filtered.entity_types),
-                "count": len(profiles_data),
-                "profiles": profiles_data
-            }
-        })
-        
-    except Exception as e:
-        logger.error(f"생성Profile실패: {str(e)}")
-        return jsonify({
-            "success": False,
-            "error": str(e),
-            "traceback": traceback.format_exc()
-        }), 500
 
 
 
