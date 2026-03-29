@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from ..config import Config
+from ...config import Config
 
 
 class ReportLogger:

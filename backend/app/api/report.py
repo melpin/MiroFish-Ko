@@ -10,8 +10,7 @@ from flask import request, jsonify, send_file
 
 from . import report_bp
 from ..config import Config
-from ..services.report_agent import ReportAgent, ReportStatus
-from ..services.report_storage import ReportManager
+from ..services.report import ReportAgent, ReportManager, ReportStatus
 from ..services.simulation_manager import SimulationManager
 from ..models.project import ProjectManager
 from ..models.task import TaskManager, TaskStatus

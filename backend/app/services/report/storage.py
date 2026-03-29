@@ -6,9 +6,9 @@ import shutil
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from ..config import Config
-from ..utils.logger import get_logger
-from .report_models import Report, ReportOutline, ReportSection, ReportStatus
+from ...config import Config
+from ...utils.logger import get_logger
+from .models import Report, ReportOutline, ReportSection, ReportStatus
 
 logger = get_logger('mirofish.report_agent')
 
