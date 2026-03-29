@@ -8,7 +8,7 @@ from .helpers import check_simulation_prepared, logger
 from ...models.project import ProjectManager
 from ...models.task import TaskManager, TaskStatus
 from ...services.simulation import SimulationManager, SimulationStatus
-from ...services.zep_entity_reader import ZepEntityReader
+from ...services.zep import ZepEntityReader
 
 
 @simulation_bp.route("/create", methods=["POST"])

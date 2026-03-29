@@ -14,7 +14,7 @@ from enum import Enum
 
 from ...config import Config
 from ...utils.logger import get_logger
-from ..zep_entity_reader import ZepEntityReader, FilteredEntities
+from ..zep import FilteredEntities, ZepEntityReader
 from ..oasis_profile_generator import OasisProfileGenerator, OasisAgentProfile
 from .config_generator import SimulationConfigGenerator, SimulationParameters
 

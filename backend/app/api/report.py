@@ -952,7 +952,7 @@ def search_graph_tool():
                 "error": "graph_id  query를 입력해 주세요."
             }), 400
         
-        from ..services.zep_tools import ZepToolsService
+        from ..services.zep import ZepToolsService
         
         tools = ZepToolsService()
         result = tools.search_graph(
@@ -996,7 +996,7 @@ def get_graph_statistics_tool():
                 "error": "graph_id를 입력해 주세요."
             }), 400
         
-        from ..services.zep_tools import ZepToolsService
+        from ..services.zep import ZepToolsService
         
         tools = ZepToolsService()
         result = tools.get_graph_statistics(graph_id)

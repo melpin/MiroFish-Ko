@@ -5,7 +5,14 @@
 from .ontology_generator import OntologyGenerator
 from .graph_builder import GraphBuilderService
 from .text_processor import TextProcessor
-from .zep_entity_reader import ZepEntityReader, EntityNode, FilteredEntities
+from .zep import (
+    AgentActivity,
+    EntityNode,
+    FilteredEntities,
+    ZepEntityReader,
+    ZepGraphMemoryManager,
+    ZepGraphMemoryUpdater,
+)
 from .oasis_profile_generator import OasisProfileGenerator, OasisAgentProfile
 from .simulation import (
     SimulationManager,
@@ -28,11 +35,6 @@ from .simulation import (
     IPCResponse,
     CommandType,
     CommandStatus,
-)
-from .zep_graph_memory_updater import (
-    ZepGraphMemoryUpdater,
-    ZepGraphMemoryManager,
-    AgentActivity
 )
 
 __all__ = [

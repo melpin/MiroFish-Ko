@@ -15,11 +15,11 @@ from dataclasses import dataclass, field
 
 from zep_cloud.client import Zep
 
-from ..config import Config
-from ..prompts import get_prompt, render_prompt
-from ..utils.logger import get_logger
-from ..utils.llm_client import LLMClient
-from ..utils.zep_paging import fetch_all_nodes, fetch_all_edges
+from ...config import Config
+from ...prompts import get_prompt, render_prompt
+from ...utils.logger import get_logger
+from ...utils.llm_client import LLMClient
+from ...utils.zep_paging import fetch_all_nodes, fetch_all_edges
 
 logger = get_logger('mirofish.zep_tools')
 
@@ -1295,7 +1295,7 @@ class ZepToolsService:
         Returns:
             InterviewResult: 인터뷰 결과
         """
-        from .simulation import SimulationRunner
+        from ..simulation import SimulationRunner
         
         logger.info(f"InterviewAgents 인터뷰(API): {interview_requirement[:50]}...")
         

@@ -23,7 +23,7 @@ from ...utils.logger import get_logger
 from .logging import ReportConsoleLogger, ReportLogger
 from .models import Report, ReportOutline, ReportSection, ReportStatus
 from .storage import ReportManager
-from ..zep_tools import (
+from ..zep import (
     ZepToolsService, 
     SearchResult, 
     InsightForgeResult, 

@@ -24,7 +24,7 @@ from openai import OpenAI
 from ...config import Config
 from ...prompts import get_prompt, render_prompt
 from ...utils.logger import get_logger
-from ..zep_entity_reader import EntityNode, ZepEntityReader
+from ..zep import EntityNode, ZepEntityReader
 
 logger = get_logger('mirofish.simulation_config')
 
