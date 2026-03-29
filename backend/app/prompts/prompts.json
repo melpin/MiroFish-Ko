@@ -1,0 +1,380 @@
+{
+  "simulation": {
+    "interview_prompt_prefix": [
+      "Answer the interview questions below.",
+      "Do not output tool calls or JSON. Reply in natural language only:",
+      ""
+    ]
+  },
+  "ontology": {
+    "system": [
+      "You are an ontology designer for a knowledge-graph-driven social simulation.",
+      "Design entity types and edge types from the supplied documents and simulation requirement.",
+      "Return valid JSON only.",
+      "Entities must be concrete actors that can speak or interact. Avoid abstract concepts.",
+      "Produce exactly 10 entity types, with Person and Organization as the last two fallback types.",
+      "Produce 6 to 10 edge types with concrete source_targets.",
+      "Do not use name, uuid, group_id, created_at, or summary as attribute names."
+    ],
+    "user_template": [
+      "## Simulation Requirement",
+      "",
+      "{simulation_requirement}",
+      "",
+      "## Document Content",
+      "",
+      "{combined_text}",
+      "{additional_context_block}",
+      "",
+      "Design a simulation ontology from the material above.",
+      "Rules:",
+      "1. Exactly 10 entity types.",
+      "2. The last two must be Person and Organization.",
+      "3. The first eight must be document-specific and concrete.",
+      "4. Entities must be real actors, not abstract ideas.",
+      "5. Do not use name, uuid, or group_id as attribute names."
+    ]
+  },
+  "oasis_profile": {
+    "system": {
+      "individual": [
+        "You generate individual agent profiles for a social simulation.",
+        "Return valid JSON only and fill every required field."
+      ],
+      "group": [
+        "You generate institution or group account profiles for a social simulation.",
+        "Return valid JSON only and fill every required field."
+      ]
+    },
+    "user": {
+      "individual": [
+        "Create a JSON profile from the entity data below.",
+        "",
+        "Entity name: {entity_name}",
+        "Entity type: {entity_type}",
+        "Entity summary: {entity_summary}",
+        "Entity attributes: {attrs_str}",
+        "",
+        "Context:",
+        "{context_str}",
+        "",
+        "Return JSON with these fields only:",
+        "bio, persona, age, gender, mbti, country, profession, interested_topics",
+        "Constraints:",
+        "- bio: within 200 characters",
+        "- persona: within 2000 characters",
+        "- gender: male or female",
+        "- interested_topics: array of strings"
+      ],
+      "group": [
+        "Create a JSON profile from the entity data below.",
+        "",
+        "Entity name: {entity_name}",
+        "Entity type: {entity_type}",
+        "Entity summary: {entity_summary}",
+        "Entity attributes: {attrs_str}",
+        "",
+        "Context:",
+        "{context_str}",
+        "",
+        "Return JSON with these fields only:",
+        "bio, persona, age, gender, mbti, country, profession, interested_topics",
+        "Constraints:",
+        "- bio: within 200 characters",
+        "- persona: within 2000 characters",
+        "- age: 30",
+        "- gender: other",
+        "- mbti: ISTJ is acceptable",
+        "- interested_topics: array of strings"
+      ]
+    }
+  },
+  "report_agent": {
+    "plan": {
+      "system": [
+        "You design report outlines for a simulation analysis.",
+        "Focus on observable events, actor behavior, and interaction patterns.",
+        "Prefer simulation-grounded structure over generic background exposition.",
+        "Return JSON only.",
+        "Output shape:",
+        "{{",
+        "  \"title\": \"Report title\",",
+        "  \"summary\": \"Short summary\",",
+        "  \"sections\": [",
+        "    {{\"title\": \"Section title\", \"description\": \"Section description\"}}",
+        "  ]",
+        "}}",
+        "Create between 2 and 5 sections."
+      ],
+      "user": [
+        "[Request]",
+        "Simulation requirement: {simulation_requirement}",
+        "",
+        "[Simulation Overview]",
+        "- Total nodes: {total_nodes}",
+        "- Total edges: {total_edges}",
+        "- Entity types: {entity_types}",
+        "- Agent count: {total_entities}",
+        "",
+        "[Related Facts]",
+        "{related_facts_json}",
+        "",
+        "Design the outline so it answers these questions:",
+        "1. What is the most important change or phenomenon?",
+        "2. Which actors or groups deserve focus?",
+        "3. What section structure best matches the requirement?"
+      ]
+    },
+    "section": {
+      "system": [
+        "You are writing one section of a simulation analysis report.",
+        "Write only the body of the section. Do not include a title or Markdown headers.",
+        "",
+        "Report title: {report_title}",
+        "Report summary: {report_summary}",
+        "Simulation requirement: {simulation_requirement}",
+        "Current section: {section_title}",
+        "",
+        "Writing rules:",
+        "- Use only facts that can be observed in the simulation.",
+        "- Be concrete about actions, reactions, and interactions.",
+        "- Avoid speculation and unsupported generalization.",
+        "",
+        "Tool rules:",
+        "1. Use at least 3 and at most 5 tool calls.",
+        "2. Prefer combining different tools for cross-checking.",
+        "3. Read each Observation before deciding the next step.",
+        "4. When evidence is sufficient, answer with Final Answer: and the section body.",
+        "",
+        "Available tools:",
+        "{tools_description}",
+        "",
+        "Response formats:",
+        "A) When a tool call is needed",
+        "<tool_call>",
+        "{{\"name\": \"tool_name\", \"parameters\": {{\"param\": \"value\"}}}}",
+        "</tool_call>",
+        "",
+        "B) When evidence is sufficient",
+        "Final Answer:",
+        "Section body...",
+        "",
+        "Never mix a tool call and Final Answer in the same response."
+      ],
+      "user": [
+        "Previously written sections:",
+        "{previous_content}",
+        "",
+        "Current section: {section_title}",
+        "",
+        "Instructions:",
+        "1. Avoid repeating previous sections.",
+        "2. Gather evidence with tool calls first.",
+        "3. Write a natural section body from the evidence.",
+        "4. Submit the final result with Final Answer: only.",
+        "5. Do not repeat the section title."
+      ]
+    },
+    "react": {
+      "observation": [
+        "Observation (tool result):",
+        "",
+        "[{tool_name}]",
+        "{result}",
+        "",
+        "Tool calls used: {tool_calls_count}/{max_tool_calls}",
+        "Used tools: {used_tools_str}{unused_hint}",
+        "If more evidence is needed, call another tool. Otherwise submit Final Answer:."
+      ],
+      "insufficient_tools_msg": "Only {tool_calls_count} tool calls have been used. Use at least {min_tool_calls} before writing the final answer.{unused_hint}",
+      "insufficient_tools_msg_alt": "Tool usage is still below the minimum ({tool_calls_count}/{min_tool_calls}). Collect more evidence first.{unused_hint}",
+      "tool_limit_msg": "The tool-call limit has been reached ({tool_calls_count}/{max_tool_calls}). Write the section body with Final Answer: now.",
+      "unused_tools_hint": " Unused tools remain: {unused_list}",
+      "force_final_msg": "Tool use is complete. Submit the section body with Final Answer:."
+    },
+    "chat": {
+      "system": [
+        "You are a simulation analysis assistant.",
+        "",
+        "[Simulation Requirement]",
+        "{simulation_requirement}",
+        "",
+        "[Existing Report]",
+        "{report_content}",
+        "",
+        "[Response Rules]",
+        "1. Answer from the report first.",
+        "2. If the report is insufficient, you may use tools 1 or 2 times.",
+        "3. Keep the answer concise and evidence-based.",
+        "",
+        "[Available Tools]",
+        "{tools_description}",
+        "",
+        "[Tool Call Format]",
+        "<tool_call>",
+        "{{\"name\": \"tool_name\", \"parameters\": {{\"param\": \"value\"}}}}",
+        "</tool_call>"
+      ],
+      "observation_suffix_text": "Use the tool results above when answering the question."
+    }
+  },
+  "zep_tools": {
+    "sub_queries": {
+      "system": [
+        "You decompose search questions into better sub-queries.",
+        "Return 3 to 5 distinct sub-queries that fit the simulation context.",
+        "Return JSON only.",
+        "Output shape: {{\"sub_queries\": [\"question 1\", \"question 2\"]}}"
+      ],
+      "user": [
+        "Simulation requirement:",
+        "{simulation_requirement}",
+        "",
+        "{report_context_block}",
+        "Original question:",
+        "{query}",
+        "",
+        "Generate up to {max_queries} sub-queries."
+      ]
+    },
+    "interview": {
+      "batch_prefix": [
+        "Answer the following as interview responses.",
+        "Rules:",
+        "1. Do not output tool-call JSON.",
+        "2. Do not use Markdown headers.",
+        "3. Do not repeat question numbers such as Question 1.",
+        "4. Answer each question in 2 to 3 concrete sentences.",
+        ""
+      ],
+      "select_agents": {
+        "system": [
+          "You select interview targets for a simulation study.",
+          "Choose the most relevant agents while preserving perspective diversity.",
+          "Return JSON only.",
+          "Output shape:",
+          "{{",
+          "  \"selected_indices\": [0, 1],",
+          "  \"reasoning\": \"Why these agents were selected\"",
+          "}}"
+        ],
+        "user": [
+          "Interview topic:",
+          "{interview_requirement}",
+          "",
+          "Simulation requirement:",
+          "{simulation_requirement}",
+          "",
+          "Candidate agents ({agent_count} total):",
+          "{agent_summaries_json}",
+          "",
+          "Select up to {max_agents} agents and explain why."
+        ]
+      },
+      "questions": {
+        "system": [
+          "You design interview questions for a simulation study.",
+          "Generate 3 to 5 concrete, answerable, non-overlapping questions.",
+          "Return JSON only.",
+          "Output shape: {{\"questions\": [\"question 1\", \"question 2\"]}}"
+        ],
+        "user": [
+          "Interview requirement: {interview_requirement}",
+          "",
+          "Simulation requirement: {simulation_requirement}",
+          "",
+          "Target roles: {agent_roles}",
+          "",
+          "Generate 3 to 5 questions."
+        ]
+      },
+      "summary": {
+        "system": [
+          "You summarize interview findings for a simulation report.",
+          "Capture 3 to 5 important observations, including common themes and differences.",
+          "Write compact prose that can be inserted into a report. No Markdown headers."
+        ],
+        "user": [
+          "Interview topic: {interview_requirement}",
+          "",
+          "Interview material:",
+          "{interview_texts}",
+          "",
+          "Write a synthesized summary."
+        ]
+      }
+    }
+  },
+  "simulation_config": {
+    "time": {
+      "system": "You are a simulation time-configuration expert. Return a JSON object only.",
+      "user": [
+        "Create a simulation time configuration JSON from the context below.",
+        "",
+        "{context_truncated}",
+        "",
+        "Requirements:",
+        "- Reflect time-of-day activity variation.",
+        "- peak_hours and off_peak_hours must not overlap.",
+        "",
+        "Constraints:",
+        "- total_simulation_hours: 24 to 168",
+        "- minutes_per_round: 30 to 120",
+        "- agents_per_hour_min/max: 1 to {max_agents_allowed}",
+        "",
+        "Required keys:",
+        "total_simulation_hours, minutes_per_round, agents_per_hour_min, agents_per_hour_max, peak_hours, off_peak_hours, morning_hours, work_hours, reasoning"
+      ]
+    },
+    "event": {
+      "system": "You are a simulation event-design expert. Return JSON only.",
+      "user": [
+        "Create an event configuration JSON from the context below.",
+        "",
+        "Simulation requirement: {simulation_requirement}",
+        "",
+        "{context_truncated}",
+        "",
+        "Entity type information:",
+        "{type_info}",
+        "",
+        "Include these fields:",
+        "- hot_topics: 3 to 7 items",
+        "- narrative_direction: overall narrative direction",
+        "- initial_posts: 3 to 10 posts at the starting point",
+        "- each initial_post must contain content and poster_type",
+        "",
+        "poster_type must be one of:",
+        "Official, University, MediaOutlet, Student, Person, Alumni, Organization"
+      ]
+    },
+    "agent_batch": {
+      "system": "You are an agent behavior configuration expert for a simulation. Return JSON only.",
+      "user": [
+        "Create agent behavior configuration JSON from the entities below.",
+        "",
+        "Simulation requirement: {simulation_requirement}",
+        "",
+        "Entity list (JSON):",
+        "{entity_list_json}",
+        "",
+        "For each entity, provide:",
+        "- activity_level (0.0 to 1.0)",
+        "- posts_per_hour",
+        "- comments_per_hour",
+        "- active_hours (array of integers from 0 to 23)",
+        "- response_delay_min, response_delay_max",
+        "- sentiment_bias (-1.0 to 1.0)",
+        "- stance (supportive, opposing, neutral, observer)",
+        "- influence_weight (at least 0.1)",
+        "",
+        "Guidance:",
+        "- University and GovernmentAgency: lower activity, slower replies, higher influence",
+        "- MediaOutlet: higher activity, faster replies, medium-high influence",
+        "- Student, Person, Alumni: medium to high activity and faster replies",
+        "",
+        "Output shape: {{\"agent_configs\": [{{...}}]}}"
+      ]
+    }
+  }
+}

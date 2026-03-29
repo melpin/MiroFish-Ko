@@ -1,4 +1,4 @@
-"""
+﻿"""
 시뮬레이션 실행에 필요한 설정 파라미터를 생성한다.
 
 입력:
@@ -22,6 +22,7 @@ from datetime import datetime
 from openai import OpenAI
 
 from ..config import Config
+from ..prompts import get_prompt, render_prompt
 from ..utils.logger import get_logger
 from .zep_entity_reader import EntityNode, ZepEntityReader
 
@@ -577,7 +578,12 @@ class SimulationConfigGenerator:
 
 - reasoning에는 설정 이유를 한국어 한 문장으로 작성하세요."""
 
-        system_prompt = "당신은 시뮬레이션 시간 설정 전문가입니다. JSON 객체만 반환하세요."
+        prompt = render_prompt(
+            "simulation_config.time.user",
+            context_truncated=context_truncated,
+            max_agents_allowed=max_agents_allowed,
+        )
+        system_prompt = get_prompt("simulation_config.time.system")
         
         try:
             return self._call_llm_with_retry(prompt, system_prompt)
@@ -696,7 +702,13 @@ class SimulationConfigGenerator:
     "reasoning": "설정 근거"
 }}"""
 
-        system_prompt = "당신은 시뮬레이션 이벤트 설계 전문가입니다. JSON만 반환하세요."
+        prompt = render_prompt(
+            "simulation_config.event.user",
+            simulation_requirement=simulation_requirement,
+            context_truncated=context_truncated,
+            type_info=type_info,
+        )
+        system_prompt = get_prompt("simulation_config.event.system")
         
         try:
             return self._call_llm_with_retry(prompt, system_prompt)
@@ -866,7 +878,12 @@ class SimulationConfigGenerator:
     ]
 }}"""
 
-        system_prompt = "당신은 에이전트 행동 시뮬레이션 설계 전문가입니다. JSON만 반환하세요."
+        prompt = render_prompt(
+            "simulation_config.agent_batch.user",
+            simulation_requirement=simulation_requirement,
+            entity_list_json=json.dumps(entity_list, ensure_ascii=False, indent=2),
+        )
+        system_prompt = get_prompt("simulation_config.agent_batch.system")
         
         try:
             result = self._call_llm_with_retry(prompt, system_prompt)
@@ -987,3 +1004,5 @@ class SimulationConfigGenerator:
                 "influence_weight": 1.0
             }
     
+
+

@@ -1,4 +1,4 @@
-"""
+﻿"""
 Zep도구
 그래프검색, 노드읽기, 엣지조회도구, Report Agent
 
@@ -16,6 +16,7 @@ from dataclasses import dataclass, field
 from zep_cloud.client import Zep
 
 from ..config import Config
+from ..prompts import get_prompt, render_prompt
 from ..utils.logger import get_logger
 from ..utils.llm_client import LLMClient
 from ..utils.zep_paging import fetch_all_nodes, fetch_all_edges
@@ -1120,6 +1121,15 @@ class ZepToolsService:
 
 최대 {max_queries}개의 하위 질문을 생성하세요."""
 
+        system_prompt = get_prompt("zep_tools.sub_queries.system")
+        user_prompt = render_prompt(
+            "zep_tools.sub_queries.user",
+            simulation_requirement=simulation_requirement,
+            report_context_block=f"보고서 맥락: {report_context[:500]}\n\n" if report_context else "",
+            query=query,
+            max_queries=max_queries,
+        )
+
         try:
             response = self.llm.chat_json(
                 messages=[
@@ -1339,6 +1349,7 @@ class ZepToolsService:
             "4. 각 질문마다 2~3문장으로 구체적으로 답하세요.\n\n"
         )
         optimized_prompt = f"{INTERVIEW_PROMPT_PREFIX}{combined_prompt}"
+        optimized_prompt = f"{get_prompt('zep_tools.interview.batch_prefix')}{combined_prompt}"
         
         # Step 4: 호출인터뷰API(platform, 플랫폼 인터뷰)
         try:
@@ -1577,6 +1588,16 @@ class ZepToolsService:
 
 최대 {max_agents}명을 선정하고 이유를 설명하세요."""
 
+        system_prompt = get_prompt("zep_tools.interview.select_agents.system")
+        user_prompt = render_prompt(
+            "zep_tools.interview.select_agents.user",
+            interview_requirement=interview_requirement,
+            simulation_requirement=simulation_requirement if simulation_requirement else "",
+            agent_count=len(agent_summaries),
+            agent_summaries_json=json.dumps(agent_summaries, ensure_ascii=False, indent=2),
+            max_agents=max_agents,
+        )
+
         try:
             response = self.llm.chat_json(
                 messages=[
@@ -1635,6 +1656,14 @@ class ZepToolsService:
 
 질문 3~5개를 생성하세요."""
 
+        system_prompt = get_prompt("zep_tools.interview.questions.system")
+        user_prompt = render_prompt(
+            "zep_tools.interview.questions.user",
+            interview_requirement=interview_requirement,
+            simulation_requirement=simulation_requirement if simulation_requirement else "",
+            agent_roles=", ".join(agent_roles),
+        )
+
         try:
             response = self.llm.chat_json(
                 messages=[
@@ -1685,6 +1714,13 @@ class ZepToolsService:
 
 위 내용을 바탕으로 종합 요약을 작성하세요."""
 
+        system_prompt = get_prompt("zep_tools.interview.summary.system")
+        user_prompt = render_prompt(
+            "zep_tools.interview.summary.user",
+            interview_requirement=interview_requirement,
+            interview_texts="\n\n".join(interview_texts),
+        )
+
         try:
             summary = self.llm.chat(
                 messages=[
@@ -1699,3 +1735,4 @@ class ZepToolsService:
         except Exception as e:
             logger.warning(f"생성인터뷰요약실패: {e}")
             return f"인터뷰 {len(interviews)}건 처리됨. 대상: " + ", ".join([i.agent_name for i in interviews])
+

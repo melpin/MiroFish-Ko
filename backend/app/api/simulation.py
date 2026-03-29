@@ -9,6 +9,7 @@ from flask import request, jsonify, send_file
 
 from . import simulation_bp
 from ..config import Config
+from ..prompts import get_prompt
 from ..services.zep_entity_reader import ZepEntityReader
 from ..services.oasis_profile_generator import OasisProfileGenerator
 from ..services.simulation_manager import SimulationManager, SimulationStatus
@@ -21,7 +22,7 @@ logger = get_logger('mirofish.api.simulation')
 
 # Interview prompt 
 # Agent도구 호출, 
-INTERVIEW_PROMPT_PREFIX = ", , 도구 호출:"
+INTERVIEW_PROMPT_PREFIX = get_prompt("simulation.interview_prompt_prefix")
 
 
 def optimize_interview_prompt(prompt: str) -> str:

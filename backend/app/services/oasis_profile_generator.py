@@ -1,4 +1,4 @@
-"""
+﻿"""
 OASIS Agent Profile생성
 Zep그래프진행 중티OASIS시뮬레이션플랫폼Agent Profile
 
@@ -19,6 +19,7 @@ from openai import OpenAI
 from zep_cloud.client import Zep
 
 from ..config import Config
+from ..prompts import get_prompt, render_prompt
 from ..utils.logger import get_logger
 from .zep_entity_reader import EntityNode, ZepEntityReader
 
@@ -669,17 +670,10 @@ class OasisProfileGenerator:
         }
     
     def _get_system_prompt(self, is_individual: bool) -> str:
-        """프로필 생성을 위한 시스템 프롬프트를 반환한다."""
-        if is_individual:
-            return (
-                "너는 소셜 시뮬레이션용 인물 프로필 생성기다. "
-                "항상 유효한 JSON만 반환하고, 지정된 필드를 빠짐없이 채워라."
-            )
-        return (
-            "너는 소셜 시뮬레이션용 기관/집단 계정 프로필 생성기다. "
-            "항상 유효한 JSON만 반환하고, 지정된 필드를 빠짐없이 채워라."
-        )
-    
+        """Load profile system prompts from the shared prompt registry."""
+        key = "oasis_profile.system.individual" if is_individual else "oasis_profile.system.group"
+        return get_prompt(key)
+
     def _build_individual_persona_prompt(
         self,
         entity_name: str,
@@ -688,36 +682,19 @@ class OasisProfileGenerator:
         entity_attributes: Dict[str, Any],
         context: str
     ) -> str:
-        """개인 엔터티용 프롬프트를 구성한다."""
-        
+        """Build the individual persona prompt from the shared prompt registry."""
+
         attrs_str = json.dumps(entity_attributes, ensure_ascii=False) if entity_attributes else ""
         context_str = context[:3000] if context else ""
-        
-        return f"""다음 개인 엔터티 정보를 바탕으로 프로필 JSON을 생성해 주세요.
 
-엔터티 이름: {entity_name}
-엔터티 타입: {entity_type}
-엔터티 요약: {entity_summary}
-엔터티 속성: {attrs_str}
-
-참고 컨텍스트:
-{context_str}
-
-반드시 아래 키를 포함한 JSON만 반환하세요:
-1. bio: 200자 이내의 간단한 소개
-2. persona: 2000자 이내의 상세 성격/행동 특성
-3. age: 정수
-4. gender: "male" 또는 "female"
-5. mbti: MBTI 문자열(예: INTJ, ENFP)
-6. country: 국가명 문자열
-7. profession: 직업/역할
-8. interested_topics: 관심 주제 문자열 배열
-
-제약:
-- JSON 외 텍스트 금지
-- persona는 구체적이고 일관되게 작성
-- age/gender 형식 반드시 준수
-"""
+        return render_prompt(
+            "oasis_profile.user.individual",
+            entity_name=entity_name,
+            entity_type=entity_type,
+            entity_summary=entity_summary,
+            attrs_str=attrs_str,
+            context_str=context_str,
+        )
 
     def _build_group_persona_prompt(
         self,
@@ -727,37 +704,20 @@ class OasisProfileGenerator:
         entity_attributes: Dict[str, Any],
         context: str
     ) -> str:
-        """기관/집단 엔터티용 프롬프트를 구성한다."""
-        
+        """Build the group persona prompt from the shared prompt registry."""
+
         attrs_str = json.dumps(entity_attributes, ensure_ascii=False) if entity_attributes else ""
         context_str = context[:3000] if context else ""
-        
-        return f"""다음 기관/집단 엔터티 정보를 바탕으로 프로필 JSON을 생성해 주세요.
 
-엔터티 이름: {entity_name}
-엔터티 타입: {entity_type}
-엔터티 요약: {entity_summary}
-엔터티 속성: {attrs_str}
+        return render_prompt(
+            "oasis_profile.user.group",
+            entity_name=entity_name,
+            entity_type=entity_type,
+            entity_summary=entity_summary,
+            attrs_str=attrs_str,
+            context_str=context_str,
+        )
 
-참고 컨텍스트:
-{context_str}
-
-반드시 아래 키를 포함한 JSON만 반환하세요:
-1. bio: 200자 이내 소개
-2. persona: 2000자 이내 상세 설명
-3. age: 30 (고정)
-4. gender: "other" (고정)
-5. mbti: "ISTJ" (기본값)
-6. country: 국가명 문자열
-7. profession: 기관 역할/직종
-8. interested_topics: 관심 주제 문자열 배열
-
-제약:
-- JSON 외 텍스트 금지
-- 기관 계정 톤으로 작성
-- age=30, gender=\"other\" 유지
-"""
-    
     def _generate_profile_rule_based(
         self,
         entity_name: str,
@@ -1185,3 +1145,5 @@ class OasisProfileGenerator:
         """[]  save_profiles() """
         logger.warning("save_profiles_to_json, save_profiles")
         self.save_profiles(profiles, file_path, platform)
+
+
