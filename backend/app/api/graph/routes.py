@@ -8,13 +8,13 @@ import traceback
 import threading
 from flask import request, jsonify
 
-from . import graph_bp
-from ..config import Config
-from ..services.graph import GraphBuilderService, OntologyGenerator, TextProcessor
-from ..utils.file_parser import FileParser
-from ..utils.logger import get_logger
-from ..models.task import TaskManager, TaskStatus
-from ..models.project import ProjectManager, ProjectStatus
+from .blueprint import graph_bp
+from ...config import Config
+from ...services.graph import GraphBuilderService, OntologyGenerator, TextProcessor
+from ...utils.file_parser import FileParser
+from ...utils.logger import get_logger
+from ...models.task import TaskManager, TaskStatus
+from ...models.project import ProjectManager, ProjectStatus
 
 # 로거
 logger = get_logger('mirofish.api')
