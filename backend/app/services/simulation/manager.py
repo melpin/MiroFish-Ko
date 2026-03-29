@@ -15,7 +15,7 @@ from enum import Enum
 from ...config import Config
 from ...utils.logger import get_logger
 from ..zep import FilteredEntities, ZepEntityReader
-from ..oasis_profile_generator import OasisProfileGenerator, OasisAgentProfile
+from ..oasis import OasisAgentProfile, OasisProfileGenerator
 from .config_generator import SimulationConfigGenerator, SimulationParameters
 
 logger = get_logger('mirofish.simulation')

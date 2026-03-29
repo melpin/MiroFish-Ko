@@ -7,7 +7,7 @@ import traceback
 from flask import jsonify, request
 
 from .blueprint import simulation_bp
-from ...services.oasis_profile_generator import OasisProfileGenerator
+from ...services.oasis import OasisProfileGenerator
 from ...services.zep import ZepEntityReader
 from ...utils.logger import get_logger
 

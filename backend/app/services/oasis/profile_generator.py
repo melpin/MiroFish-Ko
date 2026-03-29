@@ -18,10 +18,10 @@ from datetime import datetime
 from openai import OpenAI
 from zep_cloud.client import Zep
 
-from ..config import Config
-from ..prompts import get_prompt, render_prompt
-from ..utils.logger import get_logger
-from .zep import EntityNode, ZepEntityReader
+from ...config import Config
+from ...prompts import get_prompt, render_prompt
+from ...utils.logger import get_logger
+from ..zep import EntityNode, ZepEntityReader
 
 logger = get_logger('mirofish.oasis_profile')
 

@@ -2,9 +2,7 @@
 서비스 모듈
 """
 
-from .ontology_generator import OntologyGenerator
-from .graph_builder import GraphBuilderService
-from .text_processor import TextProcessor
+from .graph import GraphBuilderService, OntologyGenerator, TextProcessor
 from .zep import (
     AgentActivity,
     EntityNode,
@@ -13,7 +11,7 @@ from .zep import (
     ZepGraphMemoryManager,
     ZepGraphMemoryUpdater,
 )
-from .oasis_profile_generator import OasisProfileGenerator, OasisAgentProfile
+from .oasis import OasisAgentProfile, OasisProfileGenerator
 from .simulation import (
     SimulationManager,
     SimulationState,
