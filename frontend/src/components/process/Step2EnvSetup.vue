@@ -639,7 +639,7 @@ import {
   getSimulationProfilesRealtime,
   getSimulationConfig,
   getSimulationConfigRealtime 
-} from '../api/simulation'
+} from '../../api/simulation'
 
 const props = defineProps({
   simulationId: String,  // 부모 컴포넌트에서 전달

@@ -209,7 +209,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import HistoryDatabase from '../components/HistoryDatabase.vue'
+import HistoryDatabase from '../components/history/HistoryDatabase.vue'
 
 const router = useRouter()
 

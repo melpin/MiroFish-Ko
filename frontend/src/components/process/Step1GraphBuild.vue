@@ -189,7 +189,7 @@
 <script setup>
 import { computed, ref, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import { createSimulation } from '../api/simulation'
+import { createSimulation } from '../../api/simulation'
 
 const router = useRouter()
 

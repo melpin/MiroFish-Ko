@@ -69,8 +69,8 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import GraphPanel from '../components/GraphPanel.vue'
-import Step3Simulation from '../components/Step3Simulation.vue'
+import GraphPanel from '../components/process/GraphPanel.vue'
+import Step3Simulation from '../components/process/Step3Simulation.vue'
 import { getProject, getGraphData } from '../api/graph'
 import { getSimulation, getSimulationConfig, stopSimulation, closeSimulationEnv, getEnvStatus } from '../api/simulation'
 

@@ -64,8 +64,8 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import GraphPanel from '../components/GraphPanel.vue'
-import Step4Report from '../components/Step4Report.vue'
+import GraphPanel from '../components/process/GraphPanel.vue'
+import Step4Report from '../components/report/Step4Report.vue'
 import { getProject, getGraphData } from '../api/graph'
 import { getSimulation } from '../api/simulation'
 import { getReport } from '../api/report'

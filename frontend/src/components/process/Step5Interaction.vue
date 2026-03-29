@@ -412,8 +412,8 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import { chatWithReport, getReport, getAgentLog } from '../api/report'
-import { interviewAgents, getSimulationProfilesRealtime } from '../api/simulation'
+import { chatWithReport, getReport, getAgentLog } from '../../api/report'
+import { interviewAgents, getSimulationProfilesRealtime } from '../../api/simulation'
 
 const props = defineProps({
   reportId: String,

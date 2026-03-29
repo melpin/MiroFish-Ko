@@ -64,8 +64,8 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import GraphPanel from '../components/GraphPanel.vue'
-import Step5Interaction from '../components/Step5Interaction.vue'
+import GraphPanel from '../components/process/GraphPanel.vue'
+import Step5Interaction from '../components/process/Step5Interaction.vue'
 import { getProject, getGraphData } from '../api/graph'
 import { getSimulation } from '../api/simulation'
 import { getReport } from '../api/report'

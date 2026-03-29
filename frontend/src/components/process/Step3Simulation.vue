@@ -293,8 +293,8 @@ import {
   stopSimulation,
   getRunStatus, 
   getRunStatusDetail
-} from '../api/simulation'
-import { generateReport } from '../api/report'
+} from '../../api/simulation'
+import { generateReport } from '../../api/report'
 
 const props = defineProps({
   simulationId: String,
