@@ -10,10 +10,10 @@ from datetime import datetime
 
 from flask import jsonify, request, send_file
 
-from .simulation import simulation_bp
-from ..config import Config
-from ..services.simulation_manager import SimulationManager
-from ..utils.logger import get_logger
+from .blueprint import simulation_bp
+from ...config import Config
+from ...services.simulation_manager import SimulationManager
+from ...utils.logger import get_logger
 
 logger = get_logger("mirofish.api.simulation.assets")
 
@@ -235,7 +235,7 @@ def download_simulation_config(simulation_id: str):
 @simulation_bp.route("/script/<script_name>/download", methods=["GET"])
 def download_simulation_script(script_name: str):
     try:
-        scripts_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../scripts"))
+        scripts_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../scripts"))
         allowed_scripts = [
             "run_twitter_simulation.py",
             "run_reddit_simulation.py",

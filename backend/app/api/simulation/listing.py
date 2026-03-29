@@ -8,17 +8,17 @@ import traceback
 
 from flask import jsonify, request
 
-from .simulation import simulation_bp
-from ..models.project import ProjectManager
-from ..services.simulation_manager import SimulationManager, SimulationStatus
-from ..services.simulation_runner import SimulationRunner
-from ..utils.logger import get_logger
+from .blueprint import simulation_bp
+from ...models.project import ProjectManager
+from ...services.simulation_manager import SimulationManager, SimulationStatus
+from ...services.simulation_runner import SimulationRunner
+from ...utils.logger import get_logger
 
 logger = get_logger("mirofish.api.simulation.listing")
 
 
 def _get_report_id_for_simulation(simulation_id: str) -> str | None:
-    reports_dir = os.path.join(os.path.dirname(__file__), "../../uploads/reports")
+    reports_dir = os.path.join(os.path.dirname(__file__), "../../../uploads/reports")
     if not os.path.exists(reports_dir):
         return None
 

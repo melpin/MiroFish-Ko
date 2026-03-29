@@ -8,8 +8,8 @@ import traceback
 
 from flask import jsonify, request
 
-from .simulation import simulation_bp
-from ..utils.logger import get_logger
+from .blueprint import simulation_bp
+from ...utils.logger import get_logger
 
 logger = get_logger("mirofish.api.simulation.content")
 
@@ -17,7 +17,7 @@ logger = get_logger("mirofish.api.simulation.content")
 def _get_simulation_dir(simulation_id: str) -> str:
     return os.path.join(
         os.path.dirname(__file__),
-        f"../../uploads/simulations/{simulation_id}",
+        f"../../../uploads/simulations/{simulation_id}",
     )
 
 
